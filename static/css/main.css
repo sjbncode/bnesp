@@ -1,8 +1,12 @@
 html{
 	box-sizing: border-box;
+	/*border-collapse: none;*/
 }
 *,*:before,*:after{
 	box-sizing: inherit;
+}
+nav,section{
+	margin-top: -19px;
 }
 
 body {
