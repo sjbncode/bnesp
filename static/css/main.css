@@ -1,0 +1,224 @@
+html{
+	box-sizing: border-box;
+}
+*,*:before,*:after{
+	box-sizing: inherit;
+}
+
+body {
+  background-image: url(../img/bg5.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+
+  font-family: 'Open Sans','helvetica',arial,sans-serif;
+  font-weight: 300;
+  color: #62686f;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  font-weight: 300;
+}
+.container{
+	width: 960px;
+	margin:0 auto;
+}
+.header-container{
+	text-align: center;
+	margin-top: 200px;
+	background-image: url(../img/banner.jpg);
+}
+.avatar{
+	margin-top: -70px;
+	border: 2px solid white;
+
+	border-radius:100%;
+	box-shadow: 0 0px 2px 1px rgba(0,0,0,0.2);
+}
+
+
+.main-nav{
+	background-color: #333;
+	text-align: center;
+}
+.main-nav ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.main-nav ul li{
+	display: inline-block;
+	margin:15px 10px;
+}
+.main-nav ul li a{
+	color: #fff;	
+	text-decoration: none;
+}
+.main-nav ul li a:hover{	
+	text-decoration: underline;
+}
+
+
+.section{
+	text-align: center;
+	background-color: #fff;
+}
+.section header{
+	margin-bottom: 40px
+}
+.section header h2:after{
+	content: "";
+	display: inline;
+	border-bottom: 3px solid black
+}
+.skill ul{
+	list-style: none;
+}
+.skill li{
+	width: 33%;
+	display: inline-block;
+	padding-top: 100px;
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+.skill .code {
+  background-image: url(../img/skill-code.png);
+}
+.skill .design {
+  background-image: url(../img/skill-design.png);
+}
+.skill .product {
+  background-image: url(../img/skill-product.png);
+}
+
+
+.experience ul{
+	list-style: none;
+}
+.experience ul li{
+	display: inline;
+}
+.experience ul li img{
+	float: left;
+	width: 180px;
+}
+.experience ul li article{
+	overflow: hidden;
+}
+
+
+
+.photos ul{
+	list-style: none;
+	padding: 0
+}
+.photos ul li{
+	display: inline;
+}
+
+.contact ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.contact ul li{
+	width: 24%;
+	display: inline-block;
+	padding-top:150px;
+	background-repeat:no-repeat;
+	background-position: center top;
+}
+.contact ul li.fb{
+	background-image: url(../img/fb-icon.png);
+}
+.contact ul li.email{
+	background-image: url(../img/email-icon.png);
+}
+.contact ul li.linkedin{
+	background-image: url(../img/linkedin-icon.png);
+}
+.contact ul li.twitter{
+	background-image: url(../img/twitter-icon.png);
+}
+
+.form-container{
+	position: relative;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.form-container label{
+	position: absolute;
+	top: 0;
+	right:60%;
+}
+.form-container label{
+	padding: 8px
+}
+.form-container input,.form-container textarea{
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 8px;
+}
+.form button{
+	border:none;
+	border-radius: 9999px;
+	background-color: #ffd524;
+	cursor: pointer;
+	text-shadow:  0 1px 1px rgba(0,0,0,0.2);
+	color: #fff;
+	box-shadow: 0 3px 0 #daae1d;
+	padding:8px;
+}
+
+
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+.container{
+		width: 100%
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+	.main-nav ul li{
+		display: block;
+	}
+	.skill li{
+		width: inherit;
+	}
+	.contact ul li{
+	width: 49%;
+	}
+	.form-container label{
+		position: static;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+.centered-image{
+	display: block;
+	width: 25%;
+	margin：0 auto
+}
+.centered-container{
+	text-align: center;
+}
