@@ -14,8 +14,8 @@ function staticFiles(url, dir) {
                 // 查找文件的mime:
                 ctx.response.type = mime.lookup(rpath);
                 ctx.response.body = await fs.readFile(fp);
-            } else {
-                ctx.response.status = 404;
+            } 
+            else {
                 await next();
             }
         } else {

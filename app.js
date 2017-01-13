@@ -10,6 +10,7 @@ require('./da/mongo_db');
 
 app.use(require('./middleware/perf-counter'));
 app.use(require('./middleware/static-files')('/',__dirname+'/static'));
+app.use(require('./middleware/static-files')('/dist/',__dirname+'/dist'));
 app.use(bodyParser());
 app.use(require('./middleware/render')('views',{noCache: !isProduction,watch: !isProduction}));
 app.use(require('./middleware/rest').restify());
