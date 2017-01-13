@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 function addMapping(router,mapping){
 	for (var url in mapping) {
@@ -16,20 +17,25 @@ function addMapping(router,mapping){
     }
 }
 
-function addControlers(router) {
-	var files=fs.readdirSync(__dirname);
-	var jsFiles=files.filter((f)=>{
+function addControlers(router,dir) {
+	var files=fs.readdirSync(dir);
+	files.filter((f)=>{
 		return f.endsWith('.js')&&f!='index.js';
-	});
-
-	for (var f of jsFiles) {
-		var c=__dirname+'/'+f;
+	}).forEach((f)=>{
+		var c=dir+'/'+f;
 		var mapping=require(c);
 		addMapping(router,mapping);
-	}
+	});
+
+	files.filter((f)=>{
+		return !fs.statSync(path.join(dir,f)).isFile();
+	})
+	.forEach((f)=>{
+		addControlers(router,path.join(dir,f));
+	});
 }
 module.exports=function(dir){
 	var router=require('koa-router')();
-	addControlers(router);
+	addControlers(router,__dirname);
 	return router.routes();
 }

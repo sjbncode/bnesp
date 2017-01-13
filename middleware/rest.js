@@ -1,23 +1,27 @@
 module.exports = {
-    APIError: function (code, message) {
-        this.code = code || 'internal:unknown_error';
-        this.message = message || '';
-    },
     restify: (pathPrefix) => {
-        // REST API前缀，默认为/api/:
         pathPrefix = pathPrefix || '/api/';
-        return async (ctx, next) => {
-            // 是否是REST API前缀?
-            if (ctx.request.path.startsWith(pathPrefix)) {
-                // 绑定rest()方法:
-                ctx.rest = (data) => {
-                    ctx.response.type = 'application/json';
-                    ctx.response.body = data;
+        return async(ctx, next) => {
+            ctx.apiError = function(code, message) {
+                this.code = code || 'internal:unknown_error';
+                this.message = message || '';
+            }
+            ctx.rest = (data) => {
+                if (data.error) {
+                    throw new ctx.apiError(500, data.error);
                 }
-                 try {
+                ctx.response.status = 200;
+                ctx.response.type = 'application/json';
+                ctx.response.body = data;
+            }
+            if (ctx.request.path.startsWith(pathPrefix)) {
+                try {
+                    ctx.response.set('Access-Control-Allow-Origin', '*');
+                    ctx.response.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+                    if ('OPTIONS' == ctx.request.method)
+                        return ctx.response.send(200);
                     await next();
                 } catch (e) {
-                    // 返回错误:
                     ctx.response.status = 400;
                     ctx.response.type = 'application/json';
                     ctx.response.body = {

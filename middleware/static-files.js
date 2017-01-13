@@ -19,7 +19,6 @@ function staticFiles(url, dir) {
                 await next();
             }
         } else {
-            // 不是指定前缀的URL，继续处理下一个middleware:
             await next();
         }
     };
