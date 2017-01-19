@@ -6,7 +6,7 @@ const bodyParser = require('koa-bodyparser');
 const isProduction = process.env.NODE_ENV === 'production';
 
 require('./da/mongo_db');
-//require('./app_api/config/passport');
+require('./middleware/passport');
 
 app.use(require('./middleware/perf-counter'));
 app.use(require('./middleware/static-files')('/',__dirname+'/static'));
