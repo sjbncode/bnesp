@@ -20,5 +20,6 @@ app.use(require('./controllers')());
 app.on('error', (err)=>{
   log.error('server error:', err);
 });
-app.listen(3000);
-console.log('app started at port 3000');
+var port=process.env.PORT||3000;
+app.listen(port);
+console.log(`app started at port ${port}`);
