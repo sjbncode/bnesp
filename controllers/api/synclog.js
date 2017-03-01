@@ -23,7 +23,12 @@ var formmatSql = function(sql, params) {
 	return sql;
 }
 var getSyncLogSummary = async(ctx, next) => {
-	var q = "SELECT *FROM (	SELECT DataName AS dataName,Status AS [status],COUNT(1) AS c FROM dbo.IntegrationLog with(nolock) GROUP BY DataName, Status ) as s PIVOT(    SUM([c])    FOR [status] IN (New,NoNeedUpload,UpdateSuccess,Exception,Processing,Inqueue))AS pvt";
+	var q = `
+SELECT *FROM (	SELECT DataName AS dataName,Status AS [status],COUNT(1) AS c FROM dbo.IntegrationLog with(nolock) GROUP BY DataName, Status ) 
+as s PIVOT(    SUM(c)    FOR [status] IN (New,Exception,Processing,Inqueue))AS pvt
+where isnull(New,0)+isnull(Exception,0)+isnull(Processing,0)+isnull(Inqueue,0)>0
+order by dataName
+	`;
 	r = await db(ctx).select(q);
 	ctx.rest(r);
 }
