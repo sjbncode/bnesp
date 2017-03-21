@@ -34,7 +34,50 @@ order by dataName
 }
 
 var getSyncErrors = async(ctx, next) => {
-	var q = "SELECT ID, DataName,Destination,Key1,key2,Key3,Result,EntityXml,PostEntityXml,SyncTimes,CreatedBy,CreatedDttm,UpdatedDttm FROM dbo.IntegrationLog WHERE Status='exception' ORDER BY CreatedDttm DESC";
+	var q = `
+SELECT  ID ,
+        DataName ,
+        Key1 ,
+        key2 ,
+        Key3 ,
+        Result 
+FROM    dbo.IntegrationLog
+WHERE   Status = 'exception'
+AND (DataName=N'{0}' OR '{1}'=N'')
+ORDER BY DataName,Result,CreatedDttm DESC
+	`;
+	var dname='';
+	if(ctx.request.body.DataName){
+		dname=ctx.request.body.DataName;
+	}
+	q = formmatSql(q, [dname,dname]);
+	r = await db(ctx).select(q);
+	ctx.rest(r);
+}
+var getSyncErrorById = async(ctx, next) => {
+	var q = `
+SELECT  ID ,
+        DataName ,
+        Destination ,
+        Key1 ,
+        key2 ,
+        Key3 ,
+        Result ,
+        EntityXml ,
+        PostEntityXml ,
+        SyncTimes ,
+        CreatedBy ,
+        CreatedDttm ,
+        UpdatedDttm
+FROM    dbo.IntegrationLog
+WHERE   id='{0}'
+ORDER BY DataName,Result,CreatedDttm DESC
+	`;
+	var id='7ECC2AA1-97A7-48B6-9CD8-F276BAE26F1C';
+	if(ctx.request.body.id){
+		id=ctx.request.body.id;
+	}
+	q = formmatSql(q, [id]);
 	r = await db(ctx).select(q);
 	ctx.rest(r);
 }
@@ -131,5 +174,7 @@ ORDER BY a.M DESC`;
 module.exports = {
 	'GET /api/t:id': index2,
 	'GET /api/synclog': getSyncLogSummary,
-	'GET /api/getCompanyMonthlySummary': getCompanyMonthlySummary
+	'GET /api/getCompanyMonthlySummary': getCompanyMonthlySummary,
+	'POST /api/getSyncErrors':getSyncErrors,
+	'POST /api/getSyncErrorById':getSyncErrorById
 };

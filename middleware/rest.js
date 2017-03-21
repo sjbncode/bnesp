@@ -19,7 +19,7 @@ module.exports = {
                     ctx.response.set('Access-Control-Allow-Origin', '*');
                     ctx.response.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
                     if ('OPTIONS' == ctx.request.method)
-                        return ctx.response.send(200);
+                        return ctx.response.status = 200;
                     await next();
                 } catch (e) {
                     ctx.response.status = 400;
