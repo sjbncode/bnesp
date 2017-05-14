@@ -32,7 +32,7 @@ function addControlers(router,dir) {
 	files.filter((f)=>{
 		return f.endsWith('.js')&&f!='index.js';
 	}).forEach((f)=>{
-		var c=dir+'/'+f;
+		let c=dir+'/'+f;
 		var mapping=require(c);
 		addMapping(router,mapping);
 	});

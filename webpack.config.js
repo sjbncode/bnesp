@@ -34,7 +34,8 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  node: { fs: 'empty' }
 }
 
 if (process.env.NODE_ENV === 'production') {
