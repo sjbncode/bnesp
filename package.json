@@ -24,6 +24,7 @@
     "babel-polyfill": "6.13.0",
     "babel-preset-es2015-node6": "0.3.0",
     "babel-preset-stage-3": "6.5.0",
+    "busboy": "^0.2.14",
     "dotenv": "^1.2.0",
     "dynamics.js": "^1.1.5",
     "jsonwebtoken": "^5.0.2",

@@ -9,10 +9,10 @@ product.getProductById=async(ctx, next) => {
 	var pid=ctx.params.pid;
 	console.log(pid);
 	var dummy={pid:pid,description:'this is discrition from api',
-imgs:['//cdna.4imprint.com/prod/300/459298.jpg',
-'//cdna.4imprint.com/prod/extras/128981/459298/300/1.jpg',
-'//cdna.4imprint.com/prod/extras/128981/459298/300/2.jpg',
-'//cdna.4imprint.com/prod/extras/128981/459298/300/3.jpg'
+imgs:[{name:'1',url:'//cdna.4imprint.com/prod/300/459298.jpg'},
+{name:'2',url:'//cdna.4imprint.com/prod/extras/128981/459298/300/1.jpg'},
+{name:'3',url:'//cdna.4imprint.com/prod/extras/128981/459298/300/2.jpg'},
+{name:'4',url:'//cdna.4imprint.com/prod/extras/128981/459298/300/3.jpg'}
 ],
 descriptions:[
 'Checkpoint friendly construction of the backpack makes it your ideal travel companion!',
@@ -31,7 +31,8 @@ descriptions:[
 'One-time tape charge: add $35 for fewer than 24 pieces; free for 24 or more!',
 'Maximum number of imprint colors: 12',
 'Ready to ship in : 4 business days *.'
-]}
+],
+prices:[{moq:1000,amount:10.882},{moq:5000,amount:9.882},{moq:10000,amount:8.882},{moq:20000,amount:6.882}]}
 	ctx.rest(dummy);
 }
 product.searchProduct=async(ctx, next) => {
