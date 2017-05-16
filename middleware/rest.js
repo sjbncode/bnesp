@@ -7,7 +7,7 @@ module.exports = {
                 this.message = message || '';
             }
             ctx.rest = (data) => {
-                if (data.error) {
+                if (data&&data.error) {
                     throw new ctx.apiError(500, data.error);
                 }
                 ctx.response.status = 200;

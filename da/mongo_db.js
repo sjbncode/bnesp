@@ -42,6 +42,6 @@ process.on('SIGTERM', function() {
     });
 });
 //use native promise
-mongoose.Promise=global.Promise;
+// mongoose.Promise=global.Promise;
 // BRING IN YOUR SCHEMAS & MODELS
 require('./models')();
