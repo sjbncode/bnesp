@@ -10,6 +10,7 @@ require('./middleware/passport');
 
 app.use(require('./middleware/perf-counter'));
 app.use(require('./middleware/static-files')('/dist/',__dirname+'/dist'));
+app.use(require('./middleware/static-files')('/uploads/',__dirname+'/uploads'));
 app.use(bodyParser());
 app.use(async (ctx,next)=>{
 	await next();
