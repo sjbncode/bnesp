@@ -2,15 +2,27 @@ var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
 
 var bs = {};
+var populateOptions=function(params){
+    var options={};
+    if(params.skip){
+        options.skip=params.skip;
+    }
+    if(params.limit){
+        options.limit=params.limit;
+    }
+    return options
+}
 bs.getProductByCategroy = async(ctx, next) => {
-    var category = ctx.request.body.category;
+	var params=ctx.request.body;
+    var category = params.category;
 
     var query = {};
     if (category) {
         query = { category: { $in: [category] } }
     }
     var projection = { _id: 0, pid: 1, name: 1, "imgs.path": 1, "prices.amount": 1 };
-    var dummy = await Product.find(query, projection);
+    var options=populateOptions(params);
+    var dummy = await Product.find(query, projection,options);
     ctx.rest(dummy);
 };
 bs.getProductById = async(ctx, next) => {
@@ -19,13 +31,15 @@ bs.getProductById = async(ctx, next) => {
     ctx.rest(product);
 }
 bs.searchProduct = async(ctx, next) => {
-    var filter = ctx.request.body.filter;
+    var params=ctx.request.body;
+    var filter = params.filter;
     var query = {};
     if (filter) {
         query = { $or: [{ pid: new RegExp(filter, 'i') }, { name: new RegExp(filter, 'i') }, { category: { $in: [new RegExp(filter, 'i')] } }] }
     }
+    var options=populateOptions(params);
     var projection = { _id: 0, pid: 1, name: 1, "imgs.path": 1, "prices.amount": 1 };
-    var dummy = await Product.find(query, projection);
+    var dummy = await Product.find(query, projection,options);
     ctx.rest(dummy);
 }
 bs.saveProduct = async(ctx, next) => {
