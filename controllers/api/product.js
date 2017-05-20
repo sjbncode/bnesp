@@ -34,8 +34,14 @@ bs.searchProduct = async(ctx, next) => {
     var params=ctx.request.body;
     var filter = params.filter;
     var query = {};
+
+    var category = params.category;
     if (filter) {
         query = { $or: [{ pid: new RegExp(filter, 'i') }, { name: new RegExp(filter, 'i') }, { category: { $in: [new RegExp(filter, 'i')] } }] }
+    }
+
+    if (category) {
+        query.category={ $in: [category] }
     }
     var options=populateOptions(params);
     var projection = { _id: 0, pid: 1, name: 1, "imgs.path": 1, "prices.amount": 1 };
