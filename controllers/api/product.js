@@ -2,16 +2,6 @@ var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
 
 var bs = {};
-var populateOptions=function(params){
-    var options={};
-    if(params.skip){
-        options.skip=params.skip;
-    }
-    if(params.limit){
-        options.limit=params.limit;
-    }
-    return options
-}
 bs.getProductByCategroy = async(ctx, next) => {
 	var params=ctx.request.body;
     var category = params.category;
@@ -35,18 +25,50 @@ bs.searchProduct = async(ctx, next) => {
     var filter = params.filter;
     var query = {};
 
-    var category = params.category;
     if (filter) {
         query = { $or: [{ pid: new RegExp(filter, 'i') }, { name: new RegExp(filter, 'i') }, { category: { $in: [new RegExp(filter, 'i')] } }] }
     }
 
-    if (category) {
-        query.category={ $in: [category] }
+    var categories = params.categories;
+    if (categories&&categories.length) {
+        query.category={ $in: categories }
     }
+
+    var prices=params.priceFilter;
+    if(prices&&prices.length>1){
+        var min=prices[0];
+        var max=prices[1];
+        if(min!=0||max!=50)
+            query["prices.amount"]={};
+        if(min!=0){
+            query["prices.amount"]["$gte"]=min;
+        }
+        if(max!=50){
+            query["prices.amount"]["$lte"]=max;
+        }
+    }
+
+    var colors=params.colors;
+    if(colors&&colors.length>0){
+        query.colors={$in: colors}
+    }
+
     var options=populateOptions(params);
     var projection = { _id: 0, pid: 1, name: 1, "imgs.path": 1, "prices.amount": 1 };
+    console.log(JSON.stringify(params));
+    console.log(JSON.stringify(query));
     var dummy = await Product.find(query, projection,options);
     ctx.rest(dummy);
+}
+var populateOptions=function(params){
+    var options={};
+    if(params.skip){
+        options.skip=params.skip;
+    }
+    if(params.limit){
+        options.limit=params.limit;
+    }
+    return options
 }
 bs.saveProduct = async(ctx, next) => {
     var product = ctx.request.body.product;
