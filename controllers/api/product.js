@@ -22,6 +22,19 @@ bs.getProductById = async(ctx, next) => {
 }
 bs.searchProduct = async(ctx, next) => {
     var params=ctx.request.body;
+    var query=populateQuery(params);
+    var options=populateOptions(params);
+    var projection = { _id: 0, pid: 1, name: 1, "imgs.path": 1, "prices.amount": 1 };
+    var dummy = await Product.find(query, projection,options);
+    ctx.rest(dummy);
+}
+bs.searchProductCount=async(ctx,next)=>{
+    var params=ctx.request.body;
+    var query=populateQuery(params);
+    var dummy = await Product.count(query);
+    ctx.rest(dummy);
+}
+var populateQuery=function(params){
     var filter = params.filter;
     var query = {};
 
@@ -52,13 +65,7 @@ bs.searchProduct = async(ctx, next) => {
     if(colors&&colors.length>0){
         query.colors={$in: colors}
     }
-
-    var options=populateOptions(params);
-    var projection = { _id: 0, pid: 1, name: 1, "imgs.path": 1, "prices.amount": 1 };
-    console.log(JSON.stringify(params));
-    console.log(JSON.stringify(query));
-    var dummy = await Product.find(query, projection,options);
-    ctx.rest(dummy);
+    return query;
 }
 var populateOptions=function(params){
     var options={};
@@ -144,6 +151,7 @@ module.exports = {
     'POST /api/getProductByCategroy': bs.getProductByCategroy,
     'POST /api/getProductById': bs.getProductById,
     'POST /api/searchProduct': bs.searchProduct,
+    'POST /api/searchProductCount': bs.searchProductCount,
     'POST /api/saveProduct': bs.saveProduct,
     'GET /api/product/test': bs.test
 };
