@@ -16,6 +16,7 @@ var productSchema = new mongoose.Schema({
 		unique: true
 	},
 	category: [String],
+	colors:[String],
 	updatedtime: {
 		type: Date,
 		default: Date.now
