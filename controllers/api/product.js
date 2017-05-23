@@ -143,6 +143,11 @@ var download = function(uri, filename, callback) {
     });
 };
 
+
+bs.loadtest = async(ctx, next) =>{
+    console.log(ctx.request.body);
+    ctx.rest({ Status: 'OK'});
+}
 // download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
 //   console.log('done');
 // });
@@ -153,5 +158,6 @@ module.exports = {
     'POST /api/searchProduct': bs.searchProduct,
     'POST /api/searchProductCount': bs.searchProductCount,
     'POST /api/saveProduct': bs.saveProduct,
-    'GET /api/product/test': bs.test
+    'GET /api/product/test': bs.test,
+    'POST /api/product/loadtest': bs.loadtest,
 };
