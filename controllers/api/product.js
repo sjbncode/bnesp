@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
+var ProductTemp = mongoose.model('ProductTemp');
 
 var bs = {};
 bs.getProductByCategroy = async(ctx, next) => {
@@ -148,6 +149,13 @@ bs.loadtest = async(ctx, next) =>{
     console.log(ctx.request.body);
     ctx.rest({ Status: 'OK'});
 }
+bs.loadProductTemp=async(ctx,next)=>{
+    var product=ctx.request.body.product;
+    console.log(product)
+    var p = new ProductTemp(product);
+    p.save();
+    ctx.rest({ Status: 'OK'});
+}
 // download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
 //   console.log('done');
 // });
@@ -159,5 +167,5 @@ module.exports = {
     'POST /api/searchProductCount': bs.searchProductCount,
     'POST /api/saveProduct': bs.saveProduct,
     'GET /api/product/test': bs.test,
-    'POST /api/product/loadtest': bs.loadtest,
+    'POST /api/product/loadtest': bs.loadProductTemp,
 };

@@ -85,5 +85,19 @@ var serialNumberSchema = new mongoose.Schema({
 	prefix: String,
 	currentNumber: Number
 })
+
+var productTempSchema = new mongoose.Schema({
+	name: String,
+	descriptions: [String],
+	imgs: [String],
+	smallImage:String,
+	ItemCode:String,
+	detailUrl:String,
+	category: String,
+	bigImgs:[String]
+});
+
+
+mongoose.model('ProductTemp', productTempSchema);
 mongoose.model('SerialNumber', serialNumberSchema);
 mongoose.model('Product', productSchema);

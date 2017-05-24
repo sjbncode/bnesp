@@ -14,7 +14,8 @@ app.use(require('./middleware/static-files')('/uploads/',__dirname+'/uploads'));
 app.use(bodyParser({
   extendTypes: {
     json: ['application/x-javascript','application/json'] // will parse application/x-javascript type body as a JSON string
-  }
+  },
+  jsonLimit:'50mb'
 }));
 app.use(async (ctx,next)=>{
 	await next();
@@ -24,7 +25,7 @@ app.use(require('./middleware/rest').restify());
 app.use(require('./controllers')());
 
 app.on('error', (err)=>{
-  log.error('server error:', err);
+  console.log('server error:', err);
 });
 var port=process.env.PORT||3000;
 app.listen(port);
