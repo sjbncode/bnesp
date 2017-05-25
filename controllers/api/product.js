@@ -491,6 +491,28 @@ bs.loadProductsTemp = async(ctx, next) => {
             });
         }
     }
+
+bs.getTempProducts = async(ctx, next) => {
+    var query = {descriptions:{$size:0}};
+    var options={};
+    options.limit = 1;
+    var dummy = await ProductTemp.find(query, {}, options);
+    console.log(dummy.length)
+    ctx.rest(dummy);
+}
+bs.saveTempProducts = async(ctx, next) => {
+    var product = ctx.request.body.product;
+    var p = new ProductTemp(product);
+    // await p.setSN();
+    var newp = await ProductTemp.findOneAndUpdate({
+        detailUrl: p.detailUrl
+    }, p, {
+        upsert: true
+    })
+    ctx.rest({
+        Status: 'OK'
+    });
+}
     // download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
     //   console.log('done');
     // });
@@ -504,4 +526,6 @@ module.exports = {
     'GET /api/product/test': bs.test,
     'POST /api/product/loadtest': bs.loadProductTemp,
     'POST /api/product/loadtest2': bs.loadProductsTemp,
+    'POST /api/product/loadtest3': bs.getTempProducts,
+    'POST /api/product/loadtest4': bs.saveTempProducts,
 };
