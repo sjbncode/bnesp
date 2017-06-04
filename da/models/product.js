@@ -94,7 +94,8 @@ var productTempSchema = new mongoose.Schema({
 	ItemCode:String,
 	detailUrl:String,
 	category: String,
-	bigImgs:[String]
+	bigImgs:[String],
+	ispy:String
 });
 
 
