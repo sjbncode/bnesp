@@ -493,9 +493,13 @@ bs.loadProductsTemp = async(ctx, next) => {
     }
 
 bs.getTempProducts = async(ctx, next) => {
-    var query = {descriptions:{$size:0}};
+    var query = {descriptions:{$size:0},detailUrl:{$not:/”/}};
     var options={};
-    options.limit = 1;
+    var limit=ctx.request.body.limit||10
+    options.limit = limit;
+    if (ctx.request.body.skip) {
+        options.skip = ctx.request.body.skip;
+    }
     var dummy = await ProductTemp.find(query, {}, options);
     console.log(dummy.length)
     ctx.rest(dummy);
@@ -510,6 +514,7 @@ bs.saveTempProducts = async(ctx, next) => {
         upsert: true
     })
     ctx.rest({
+        url:p.detailUrl,
         Status: 'OK'
     });
 }
