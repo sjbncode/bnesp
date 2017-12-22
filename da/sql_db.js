@@ -43,7 +43,7 @@ var sqldb = function(conn_str) {
 	//convert table to json  
 	function toJson(dt, tbName) {
 		var results = [];
-		if (dt != undefined && dt.rows.length > 0) {
+		if (dt != undefined &&dt.rows!=null&& dt.rows.length > 0) {
 			var rowLen = dt.rows.length;
 			var colLen = dt.meta.length;
 			for (var i = 0; i < rowLen; i++) {

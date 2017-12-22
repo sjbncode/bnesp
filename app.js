@@ -1,5 +1,8 @@
 require('dotenv').load();
+var fs = require('fs');
 const Koa=require('koa');
+
+var https = require('https');
 const app=new Koa();
 const bodyParser = require('koa-bodyparser');
 // bodyParser.json({limit:'50mb'})
@@ -29,5 +32,11 @@ app.on('error', (err)=>{
   console.log('server error:', err);
 });
 var port=process.env.PORT||3000;
-app.listen(port);
+// app.listen(port);
+var options = {
+    key: fs.readFileSync('./ssl/key.pem'),  //ssl文件路径
+    cert: fs.readFileSync('./ssl/key-cert.pem')  //ssl文件路径
+};
+// options={}
+https.createServer(options, app.callback()).listen(port);
 console.log(`app started at port ${port}`);

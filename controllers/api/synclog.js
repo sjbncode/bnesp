@@ -10,7 +10,10 @@ function db(ctx) {
 	var conn;
 	if (ctx.params.site == 'US' || ctx.params.site == 'US') {
 		conn = process.env.SQL_CON_US;
+	}else if(ctx.params.site == 'local'){
+		conn = process.env.SQL_CON_local;
 	}
+	conn = process.env.SQL_CON_local;
 	return new require('../../da/sql_db')(conn);
 }
 
@@ -166,9 +169,50 @@ SELECT a.M,COUNT(1) AS  orders,SUM(a.TotalAmount)  AS amount
 FROM pitmp a
 GROUP BY a.M
 ORDER BY a.M DESC`;
+		q=`;WITH pitmp AS( 
+SELECT CONVERT(NVARCHAR(128),YEAR(DATEADD(hour,8,b.NewInvoiceDate)))+'-'+RIGHT('00'+CONVERT(NVARCHAR(128),MONTH(DATEADD(hour,8,b.NewInvoiceDate))),2) AS M 
+,a.Amount AS TotalAmount
+FROM dbo.FinalInvoiceDetail a WITH(NOLOCK) 
+INNER JOIN dbo.FinalInvoiceHeader b  WITH(NOLOCK) ON a.FinalInvoiceID = b.FinalInvoiceID
+)
 
+SELECT a.M,SUM(a.TotalAmount)  AS amount
+FROM pitmp a
+GROUP BY a.M
+ORDER BY a.M DESC`;
 	}
 	r = await db(ctx).select(q);
+	ctx.rest(r);
+}
+
+
+var addguess = async(ctx, next) => {
+	var q = `
+INSERT INTO dbo.CCL ( iRet, lastround_1, lastround_2, lastround_3,
+                       lastround_4, roundid, turnid, round, status, chess,
+                       turn_1, turn_2, turn_3, turn_4, sumincome, winusercount,
+                       usercount ,CD)
+VALUES  ( '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}' ,getdate())
+`;
+	q = formmatSql(q, [
+ctx.request.body.iRet,
+ctx.request.body.lastround_1,
+ctx.request.body.lastround_2,
+ctx.request.body.lastround_3,
+ctx.request.body.lastround_4,
+ctx.request.body.roundid,
+ctx.request.body.turnid,
+ctx.request.body.round,
+ctx.request.body.status,
+ctx.request.body.chess,
+ctx.request.body.turn_1,
+ctx.request.body.turn_2,
+ctx.request.body.turn_3,
+ctx.request.body.turn_4,
+ctx.request.body.sumincome,
+ctx.request.body.winusercount,
+ctx.request.body.usercount]);
+	r = await db(ctx).update(q);
 	ctx.rest(r);
 }
 module.exports = {
@@ -176,5 +220,6 @@ module.exports = {
 	'GET /api/synclog': getSyncLogSummary,
 	'GET /api/getCompanyMonthlySummary': getCompanyMonthlySummary,
 	'POST /api/getSyncErrors':getSyncErrors,
-	'POST /api/getSyncErrorById':getSyncErrorById
+	'POST /api/getSyncErrorById':getSyncErrorById,
+	'POST /api/addguess':addguess,
 };
